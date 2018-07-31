@@ -1,21 +1,88 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, StatusBar } from 'react-native';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  ImageBackground
+} from "react-native";
+import Login from "./screens/Login";
+import Register from "./screens/Register";
+import ForgotPassword from "./screens/ForgotPassword";
+import { w } from "./api/Dimensions";
+import { createStackNavigator, StackNavigator } from "react-navigation";
+import Home from "./screens/HomeScreen";
+import DrawerNavigator from "./screens/TabNavigator/DrawerNavigator";
+import firebase from "firebase";
 
-import Routes from './src/Routes';
+const config = {
+  apiKey: "AIzaSyDIOC2TDjKZVK3tj1bxYqw06BwNUtVBsjo",
+  authDomain: "auth-2345.firebaseapp.com",
+  databaseURL: "https://auth-2345.firebaseio.com",
+  projectId: "auth-2345",
+  storageBucket: "auth-2345.appspot.com",
+  messagingSenderId: "1072093707426"
+};
+firebase.initializeApp(config);
 
-export default class App extends React.Component {
+export default class FirebaseLogin extends Component {
+  state = {
+    currentScreen: "login" // can be: 'login' or 'register' or 'forgot'
+  };
+
+  changeScreen = screenName => () => {
+    this.setState({ currentScreen: screenName });
+  };
+
+  userSuccessfullyLoggedIn = user => {
+    this.props.change("Home");
+  };
+
   render() {
+    let screenToShow;
+
+    switch (this.state.currentScreen) {
+      case "login":
+        screenToShow = (
+          <Login
+            change={this.changeScreen}
+            success={this.userSuccessfullyLoggedIn}
+          />
+        );
+        break;
+      case "register":
+        screenToShow = <Register change={this.changeScreen} />;
+        break;
+      case "forgot":
+        screenToShow = <ForgotPassword change={this.changeScreen} />;
+        break;
+    }
+
     return (
-      <View style={styles.container}>
-        <StatusBar backgroundColor="#1c313a" barStyle="light-content" />
-        <Routes />
-      </View>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={-w(40)}
+        style={styles.container}
+      >
+        <ImageBackground
+          source={this.props.background}
+          style={styles.background}
+          resizeMode="stretch"
+        >
+          {screenToShow}
+        </ImageBackground>
+      </KeyboardAvoidingView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    width: "100%",
+    height: "100%",
+    backgroundColor: "#555"
+  },
+  background: {
+    width: "100%",
+    height: "100%"
   }
 });
