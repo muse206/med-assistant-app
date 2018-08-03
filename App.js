@@ -8,10 +8,10 @@ import {
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ForgotPassword from "./screens/ForgotPassword";
+import Home from "./screens/MainApp/HomeScreen";
 import { w } from "./api/Dimensions";
 import { createStackNavigator, StackNavigator } from "react-navigation";
-import Home from "./screens/HomeScreen";
-import DrawerNavigator from "./screens/TabNavigator/DrawerNavigator";
+
 import firebase from "firebase";
 
 const config = {
@@ -34,7 +34,7 @@ export default class FirebaseLogin extends Component {
   };
 
   userSuccessfullyLoggedIn = user => {
-    this.props.change("Home");
+    this.props.change(user);
   };
 
   render() {
@@ -54,6 +54,9 @@ export default class FirebaseLogin extends Component {
         break;
       case "forgot":
         screenToShow = <ForgotPassword change={this.changeScreen} />;
+        break;
+      case "home":
+        screenToShow = <Home change={this.changeScreen} />;
         break;
     }
 

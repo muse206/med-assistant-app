@@ -9,8 +9,8 @@ import {
   createSwitchNavigator,
   NavigationActions
 } from "react-navigation";
-import Home from "../HomeScreen";
-const companyLogo = require("../../assets/companylogo.png");
+import Home from "../MainApp/HomeScreen";
+const companylogo = require("../../assets/companylogo.png");
 const email = require("../../assets/email.png");
 const password = require("../../assets/password.png");
 
@@ -52,15 +52,14 @@ export default class Login extends Component {
   loginToFireBase = (email, password) => {
     this.setState({ isLogin: true });
     Firebase.userLogin(email, password).then(user => {
-      if (user) this.props.change("Home")();
-      this.setState({ isLogin: false });
+      if (user) this.props.change("home")();
     });
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Image style={styles.icon} resizeMode="contain" source={companyLogo} />
+        <Image style={styles.icon} resizeMode="contain" source={companylogo} />
         <InputField
           placeholder="Email"
           keyboardType="email-address"
