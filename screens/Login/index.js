@@ -1,11 +1,12 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
 import InputField from "../../components/InputField";
 import { w, h, totalSize } from "../../api/Dimensions";
 import GetStarted from "./GetStarted";
 import Firebase from "../../api/Firebase";
 import {
-  StackNavigator,
+  createStackNavigator,
   createSwitchNavigator,
   NavigationActions
 } from "react-navigation";
@@ -15,6 +16,9 @@ const email = require("../../assets/email.png");
 const password = require("../../assets/password.png");
 
 export default class Login extends Component {
+  static navigationOptions = {
+    title: "Login"
+  };
   state = {
     isEmailCorrect: false,
     isPasswordCorrect: false,
@@ -52,7 +56,7 @@ export default class Login extends Component {
   loginToFireBase = (email, password) => {
     this.setState({ isLogin: true });
     Firebase.userLogin(email, password).then(user => {
-      if (user) this.props.change("home")();
+      if (user) this.props.navigation.navigate("Home");
     });
   };
 
@@ -82,14 +86,14 @@ export default class Login extends Component {
         <GetStarted click={this.getStarted} isLogin={this.state.isLogin} />
         <View style={styles.textContainer}>
           <TouchableOpacity
-            onPress={this.props.change("register")}
+            onPress={() => this.props.navigation.navigate("register")}
             style={styles.touchable}
             activeOpacity={0.6}
           >
             <Text style={styles.createAccount}>Create Account</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={this.props.change("forgot")}
+            onPress={() => this.props.navigation.navigate("forgot")}
             style={styles.touchable}
             activeOpacity={0.6}
           >

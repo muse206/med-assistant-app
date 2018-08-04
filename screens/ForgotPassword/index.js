@@ -4,10 +4,13 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { w, h, totalSize } from "../../api/Dimensions";
 import InputField from "../../components/InputField";
 import Firebase from "../../api/Firebase";
-
+import createStackNavigator from "react-navigation";
 const email = require("../../assets/email.png");
 
 export default class ForgotPassword extends Component {
+  static navigationOptions = {
+    title: "ForgotPassword"
+  };
   state = {
     isEmailCorrect: false
   };
@@ -30,7 +33,7 @@ export default class ForgotPassword extends Component {
 
   sendEmailWithPassword = email => {
     Firebase.sendEmailWithPassword(email).then(result => {
-      if (result) this.props.change("login")();
+      if (result) this.props.navigation.navigate("login")();
     });
   };
 
@@ -60,7 +63,7 @@ export default class ForgotPassword extends Component {
           <Text style={styles.buttonText}>Send Email</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={this.props.change("login")}
+          onPress={() => this.props.navigation.navigate("login")}
           style={styles.touchable}
         >
           <Text style={styles.login}>{"<"} Back To Login</Text>
