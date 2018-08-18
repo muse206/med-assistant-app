@@ -5,20 +5,13 @@ import { w, h, totalSize } from "../../api/Dimensions";
 import InputField from "../../components/InputField";
 import Continue from "./Continue";
 import Firebase from "../../api/Firebase";
-import {
-  createStackNavigator,
-  createSwitchNavigator,
-  NavigationActions
-} from "react-navigation";
+
 const email = require("../../assets/email.png");
 const password = require("../../assets/password.png");
 const repeat = require("../../assets/repeat.png");
 const person = require("../../assets/person.png");
 
 export default class Register extends Component {
-  static navigationOptions = {
-    title: "Register"
-  };
   state = {
     isNameCorrect: false,
     isEmailCorrect: false,
@@ -58,7 +51,7 @@ export default class Register extends Component {
   createFireBaseAccount = (name, email, password) => {
     this.setState({ isCreatingAccount: true });
     Firebase.createFirebaseAccount(name, email, password).then(result => {
-      if (result) this.props.navigation.navigate("login")();
+      if (result) this.props.change("login")();
       this.setState({ isCreatingAccount: false });
     });
   };
@@ -124,7 +117,6 @@ export default class Register extends Component {
         />
         <InputField
           placeholder="Repeat Password"
-          q
           error={this.state.isRepeatCorrect}
           style={styles.input}
           secureTextEntry={true}
@@ -139,7 +131,7 @@ export default class Register extends Component {
           click={this.createUserAccount}
         />
         <TouchableOpacity
-          onPress={() => this.props.navigation.navigate("login")}
+          onPress={this.props.change("login")}
           style={styles.touchable}
         >
           <Text style={styles.signIn}>{"<"} Sign In</Text>

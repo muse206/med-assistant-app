@@ -1,25 +1,18 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { AppLoading, Asset, Font, Icon } from "expo";
 import {
   KeyboardAvoidingView,
-  View,
   StyleSheet,
-  ImageBackground,
-  StatusBar,
-  Platform
+  ImageBackground
 } from "react-native";
 import Login from "./screens/Login";
 import Register from "./screens/Register";
 import ForgotPassword from "./screens/ForgotPassword";
 import Home from "./screens/MainApp/HomeScreen";
 import { w } from "./api/Dimensions";
-import AppNavigator from "./navigation/AppNavigator";
 import { createStackNavigator, StackNavigator } from "react-navigation";
+
 import firebase from "firebase";
-import SettingsScreen from "./screens/MainApp/SettingsScreen";
-import HomeScreen from "./screens/MainApp/HomeScreen";
-const AuthStack = { Login: Login };
 
 const config = {
   apiKey: "AIzaSyDIOC2TDjKZVK3tj1bxYqw06BwNUtVBsjo",
@@ -31,7 +24,7 @@ const config = {
 };
 firebase.initializeApp(config);
 
-export default class App extends Component {
+export default class FirebaseLogin extends Component {
   state = {
     currentScreen: "login" // can be: 'login' or 'register' or 'forgot'
   };
@@ -41,7 +34,7 @@ export default class App extends Component {
   };
 
   userSuccessfullyLoggedIn = user => {
-    this.props.navigation.navigate(user);
+    this.props.change(user);
   };
 
   render() {
@@ -68,10 +61,19 @@ export default class App extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </View>
+      <KeyboardAvoidingView
+        behavior="position"
+        keyboardVerticalOffset={-w(40)}
+        style={styles.container}
+      >
+        <ImageBackground
+          source={this.props.background}
+          style={styles.background}
+          resizeMode="stretch"
+        >
+          {screenToShow}
+        </ImageBackground>
+      </KeyboardAvoidingView>
     );
   }
 }

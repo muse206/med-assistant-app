@@ -14,7 +14,7 @@ export default class Continue extends Component {
     return (
       <TouchableOpacity
         activeOpacity={0.5}
-        onPress={() => this.props.click}
+        onPress={this.props.click}
         style={styles.button}
       >
         {this.props.isCreating ? (
